@@ -1,0 +1,131 @@
+import java.util.Scanner;
+
+/*
+    Week 2 Lab: Weather Report Program
+    Topics: Conditional statements, loops, typecasting, input validation
+    Objective: Ask the user for weather info, validate input, and display a full report
+    Name: Vrushil Panchal
+    Rollno. 200628377
+*/
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        String continueChoice;
+
+        do {
+            /*
+            STEP 1: Declare variables for weather information
+            */
+            String weatherCondition;
+            String precipitationChance;
+            String windSpeedInput;
+            double highTemp;
+            double lowTemp;
+            int uvIndex;
+
+            /*
+            STEP 2: Get input from the user
+            */
+            System.out.print("Enter today's weather condition (Sunny, Cloudy, Rainy): ");
+            weatherCondition = input.nextLine();
+
+            System.out.print("Enter possibility of precipitation (%): ");
+            precipitationChance = input.nextLine();
+
+            System.out.print("Enter wind speed (km/h): ");
+            windSpeedInput = input.nextLine();
+
+            // Validate high and low temperatures
+            while (true) {
+                System.out.print("Enter daily high temperature: ");
+                highTemp = input.nextDouble();
+
+                System.out.print("Enter daily low temperature: ");
+                lowTemp = input.nextDouble();
+
+                if (highTemp >= lowTemp) {
+                    break;
+                } else {
+                    System.out.println("High temperature must be greater than or equal to low temperature. Please re-enter.");
+                }
+            }
+
+            // Validate UV index
+            while (true) {
+                System.out.print("Enter UV Index (0 - 11): ");
+                uvIndex = input.nextInt();
+
+                if (uvIndex >= 0 && uvIndex <= 11) {
+                    break;
+                } else {
+                    System.out.println("Invalid UV Index. Please enter a value between 0 and 11.");
+                }
+            }
+
+            input.nextLine(); // clear buffer
+
+            /*
+            STEP 3: Typecasting
+            */
+            int roundedHighTemp = (int) highTemp;
+            int roundedLowTemp = (int) lowTemp;
+
+            /*
+            STEP 4: Conditional statements for tips
+            */
+            String uvTip = "";
+            String rainTip = "";
+            String windTip = "";
+
+            if (uvIndex >= 6) {
+                uvTip = "Use sunscreen. ";
+            }
+
+            try {
+                int rainPercent = Integer.parseInt(precipitationChance);
+                if (rainPercent >= 50) {
+                    rainTip = "Carry an umbrella. ";
+                }
+            } catch (NumberFormatException e) {
+                rainTip = "";
+            }
+
+            try {
+                int windSpeed = Integer.parseInt(windSpeedInput);
+                if (windSpeed > 40) {
+                    windTip = "Windy conditions expected. ";
+                }
+            } catch (NumberFormatException e) {
+                windTip = "";
+            }
+
+            /*
+            STEP 5: Create full report
+            */
+            String fullReport = "Weather Report:\n" +
+                    "Condition: " + weatherCondition + "\n" +
+                    "High Temperature: " + roundedHighTemp + "°C\n" +
+                    "Low Temperature: " + roundedLowTemp + "°C\n" +
+                    "UV Index: " + uvIndex + "\n" +
+                    "Precipitation Chance: " + precipitationChance + "%\n" +
+                    "Wind Speed: " + windSpeedInput + " km/h\n" +
+                    "Tips: " + uvTip + rainTip + windTip;
+
+            /*
+            STEP 6: Print the report
+            */
+            System.out.println("\n" + fullReport);
+
+            /*
+            STEP 7: Optional extra challenge
+            */
+            System.out.print("\nDo you want to enter another day's report? (yes/no): ");
+            continueChoice = input.nextLine();
+
+        } while (continueChoice.equalsIgnoreCase("yes"));
+
+        input.close();
+    }
+}
